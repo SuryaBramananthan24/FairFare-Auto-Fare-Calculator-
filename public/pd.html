@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details</title>
+    <style>
+	    body {
+            background-color: #fdd835; /* Taxi Yellow */
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+		#submit-btn {
+            width: 50%;
+            padding: 10px;
+            margin: 5px 0;
+			position:relative;
+			left: -25px;
+        }
+        
+        .login-container {
+            width: 375px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input{
+            width: 93%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #c {
+            width: 100%;
+            padding: 10px;
+            background-color: #006064; /* Petrol Blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #c:hover {
+            background-color: #004d40;
+        }
+        .options {
+            text-align: center;
+            margin-top: 10px;
+        }
+        a {
+            color: #006064;
+            text-decoration: none;
+            
+            margin: 5px 0;
+        }
+        .or {
+            text-align: center;
+            margin: 10px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body><br>
+       <h2>Auto Fee Calculator</h2>
+       <div class="login-container">
+        <h2>Payment Details</h2>
+		<p>------------------------------------------------------------------</p>
+        <form action="/pd">
+		<div id='f'></div>
+			<button type="submit" id='c'>Back</button>
+		</form>
+<script>
+	let fare = localStorage.getItem('fare');
+	let from = localStorage.getItem('from');
+	let to = localStorage.getItem('to');
+	let distance = localStorage.getItem('distance');
+	let duration = localStorage.getItem('duration');
+	let dup = localStorage.getItem('dup');
+	fare = Math.round(fare);
+	distance = Math.round(distance)/1000;
+	console.log(fare);
+	document.getElementById('f').innerHTML = `<center><h2>Origin : ${from.toUpperCase()}</h2><h2>Destination : ${to.toUpperCase()}</h2><h2>Distance : ${distance} km</h2><h2>Duration : ${Math.floor(duration / 60)} minutes ${duration % 60} seconds</h2><h2>Driver's UPI ID : ${dup}</h2><h2>Amount Paid : ${fare}</h2></center>`;
+	let c = document.getElementById('c');
+	c.onclick = function() { 
+			event.preventDefault();
+			window.location.href = '/usm';
+	}
+</script>
+
+</body>
+</html>

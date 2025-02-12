@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Fee Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-marker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdd835; /* Taxi Yellow */
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: #006064;
+        }
+
+        button {
+            background-color: #006064;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #006064;
+            padding: 20px;
+            color: white;
+        }
+
+        nav .logo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        nav .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav .nav-links li {
+            font-size: 18px;
+        }
+
+        nav .nav-links li a {
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav .nav-links li a:hover {
+            background-color: #004d40;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .hero-content {
+            max-width: 50%;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .hero-map {
+            width: 50%;
+            height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Advantages Section */
+        .advantages {
+            text-align: center;
+            padding: 50px 20px 80px; /* Extra padding for footer clearance */
+        }
+
+        .advantages h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .advantage-cards {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .card {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 16px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background-color: #004d40;
+            color: white;
+            padding: 50px 20px 80px; /* Extra padding for footer clearance */
+            text-align: center;
+        }
+
+        .how-it-works h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .step {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            color: #333;
+        }
+
+        .step h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #006064;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+		.card, .step {
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			cursor: pointer;
+			overflow: hidden;
+		}
+		.card.expanded, .step.expanded {
+			transition: height 0.3s ease, padding 0.3s ease;
+		}
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <h2>Auto Fee Calculator</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#advantages">Why Us?</a></li>
+            <li><a href="#hero">Features</a></li>
+            <li><a href="#how-it-works">How To Use</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>Calculate Your Auto Fare Quickly and Easily</h1>
+            <p>Our Auto Fee Calculator helps you calculate fare based on distance, traffic, and weather conditions. Get the most accurate fare estimate with ease!</p>
+            <button onclick="window.location.href='/usl'">Get Started</button>
+        </div>
+        <div id="map" class="hero-map"></div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section class="advantages" id="advantages">
+        <h2>Why Use Our Service?</h2>
+        <div class="advantage-cards">
+            <div class="card">
+                <h3>Accurate Fare Calculation</h3>
+                <p>Our algorithm uses real-time traffic and weather data to calculate the most accurate fare, so you know exactly what to expect.</p>
+            </div>
+            <div class="card">
+                <h3>Real-time Route Visualization</h3>
+                <p>See your route on an interactive map. Track your journey in real-time with detailed instructions and turn-by-turn directions.</p>
+            </div>
+            <div class="card">
+                <h3>Optimized for Rain & Traffic</h3>
+                <p>We account for factors like rainy weather and heavy traffic to ensure that you have the best fare estimate based on actual conditions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <h3>Step 1: Enter Your Route</h3>
+                <p>Provide your origin and destination, and our system will calculate the best route for you.</p>
+            </div>
+            <div class="step">
+                <h3>Step 2: Get Estimated Fare</h3>
+                <p>Based on the route, weather, and traffic conditions, you will receive an accurate fare estimate.</p>
+            </div>
+            <div class="step">
+                <h3>Step 3: Pay & Enjoy Your Ride</h3>
+                <p>Once you know your fare, proceed with payment and enjoy a hassle-free ride!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Auto Fee Calculator. All Rights Reserved.</p>
+    </footer>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var platform = new H.service.Platform({
+                apikey: 'qtKVSEmtQ4FwMlDQtmHc9ixw5nfRLivVYAvBzLoPz8A'
+            });
+
+            const defaultLayers = platform.createDefaultLayers();
+            const mapContainer = document.getElementById('map');
+            const map = new H.Map(mapContainer, defaultLayers.vector.normal.map, {
+                center: { lat: 9.9252, lng: 78.1198 },
+                zoom: 10,
+                pixelRatio: window.devicePixelRatio || 1
+            });
+
+            const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+            const ui = H.ui.UI.createDefault(map, defaultLayers);
+        });
+		document.addEventListener('DOMContentLoaded', function () {
+    // Select all cards
+    const cards = document.querySelectorAll('.card, .step');
+
+    // Add hover effect for better visual feedback
+    cards.forEach(card => {
+        card.addEventListener('mouseover', () => {
+            card.style.transform = 'scale(1.05)';
+            card.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+        });
+
+        card.addEventListener('mouseout', () => {
+            card.style.transform = 'scale(1)';
+            card.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+        });
+
+        // Expand card content on click
+        card.addEventListener('click', () => {
+            if (!card.classList.contains('expanded')) {
+                card.classList.add('expanded');
+                card.style.height = 'auto';
+                card.style.padding = '30px';
+                const moreContent = document.createElement('p');
+                moreContent.textContent = 'Here is more detailed content about this feature...';
+                moreContent.style.marginTop = '10px';
+                moreContent.className = 'extra-content';
+                card.appendChild(moreContent);
+            } else {
+                card.classList.remove('expanded');
+                const extraContent = card.querySelector('.extra-content');
+                if (extraContent) {
+                    extraContent.remove();
+                }
+            }
+        });
+
+        // Make cards keyboard accessible
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                card.click();
+            }
+        });
+    });
+});
+    </script>
+</body>
