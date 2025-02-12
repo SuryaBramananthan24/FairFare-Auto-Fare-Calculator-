@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const {body,validationResult} = require('express-validator');
 
 mongoose.connect(
-  'mongodb+srv://suryasanjay6444:Mongodbsurya%40123@auto.xzi1e.mongodb.net/Auto?tls=true&tlsInsecure=true',
+  '<YourMongoDBURL>tls=true&tlsInsecure=true',
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 mongoose.connection.on('open',()=>{
